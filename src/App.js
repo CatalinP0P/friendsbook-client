@@ -19,6 +19,14 @@ function App() {
         element={
           authContext.currentUser ? (
             <Layout>
+              {/* <button
+                onClick={async () => {
+                  const token = await authContext.currentUser.getIdToken();
+                  console.log(token);
+                }}
+              >
+                Show token
+              </button> */}
               <LandingPage />
             </Layout>
           ) : (
@@ -27,7 +35,7 @@ function App() {
         }
       />
 
-      <Route path="/profile/:id" element={<Profile/>}/>
+      <Route path="/profile/:id" element={<Profile />} />
     </Routes>
   ) : null;
 }

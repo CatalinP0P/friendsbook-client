@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import liked from "../assets/liked.svg";
 import notLiked from "../assets/notliked.svg";
 
+import { Link } from "react-router-dom";
+
 import { useCallback } from "react";
 import { useDB } from "../context/dbContext";
 import { useAuth } from "../context/authContext";
@@ -28,19 +30,23 @@ export default function Post({ post }) {
 
   return (
     <div className="bg-white p-4 px-6 w-full flex flex-col gap-8">
-      <div className="flex flex-row gap-4 w-full">
-        <img
-          className="min-w-[64px] h-[64px] rounded-full"
-          src={post.userPhoto}
-        />
+      <Link to={"/profile/" + post.userId} className="cursor-pointer">
+        <div className="flex flex-row gap-4 w-full pointer-events-none">
+          <img
+            className="min-w-[64px] h-[64px] rounded-full"
+            src={post.userPhoto}
+          />
 
-        <div className="flex flex-col w-full justify-around">
-          <label className="font-medium text-xl">{post.userDisplayName}</label>
-          <label className="font-semibold text-sm text-gray-400">
-            24 Aug 2023
-          </label>
+          <div className="flex flex-col w-full justify-around">
+            <label className="font-medium text-xl">
+              {post.userDisplayName}
+            </label>
+            <label className="font-semibold text-sm text-gray-400">
+              24 Aug 2023
+            </label>
+          </div>
         </div>
-      </div>
+      </Link>
 
       <label>{post.title}</label>
       <img

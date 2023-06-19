@@ -16,8 +16,11 @@ export const AuthProvider = ({ children }) => {
 
   firebase.auth().onAuthStateChanged(async (user) => {
     setUser(user);
-    setLoaded(true)
-    if (!user) return;
+    setLoaded(true);
+    if (!user) {
+      if (currentUser != null) window.location.href = window.location.origin;
+      return;
+    }
     const token = await user.getIdToken();
     db.setIdToken(token);
   });

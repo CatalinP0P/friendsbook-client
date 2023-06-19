@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import searchSVG from "../assets/search.svg";
 import firebase from "../lib/firebase";
+import { Link } from "react-router-dom";
+
 const auth = firebase.auth();
 
 export default function Header() {
@@ -9,7 +11,11 @@ export default function Header() {
   return (
     <div className="bg-blue-900">
       <div className="mx-auto max-w-[2200px] grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 w-[95%] p-4 gap-4 items-center">
-        <label className="text-2xl lg:text-4xl">FriendsBook</label>
+        <Link to={"/"} className="cursor-pointer">
+          <label className="text-2xl lg:text-4xl pointer-events-none">
+            FriendsBook
+          </label>
+        </Link>
         <div className="w-full md:flex flex-row justify-start hidden col-span-2">
           <div className="flex flex-row gap-2 items-center justify-start bg-white rounded-full px-2 overflow-hidden">
             <img className="w-[32px] p-[2px]" src={searchSVG} />
@@ -41,7 +47,6 @@ export default function Header() {
                 setMenuVisibility(false);
               }}
             >
-              {" "}
               Log out
             </label>
           </div>

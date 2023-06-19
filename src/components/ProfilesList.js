@@ -1,14 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDB } from "../context/dbContext";
+import { useAuth } from "../context/authContext";
+import { Link } from "react-router-dom";
 
-export default function ProfilesList({ profiles }) {
+export default function ProfilesList({ idsList }) {
+  const db = useDB();
+  const auth = useAuth();
+
+  const [profiles, setProfiles] = useState([]);
+
+  const fetchDetails = async () => {
+    idsList.forEach(async (id) => {
+      const det = await db.getProfileDetails(id);
+      setProfiles((oldProfiles) => [...oldProfiles, det]);
+    });
+  };
+  useEffect(() => {
+    fetchDetails();
+  }, []);
+
   return (
     <div className="flex flex-col gap-2">
       {profiles.map((profile) => {
         return (
-          <div className="flex flex-row gap-4 w-full items-center" key={Math.random() * 1000}>
-            <div className="min-w-[64px] h-[64px] rounded-full bg-gray-400" />
-            <label>{profile.displayName}</label>
-          </div>
+          <Link
+            to={"/profile/" + profile.uid}
+            className="cursor-pointer"
+            key={profile.uid}
+          >
+            <div className="flex flex-row gap-4 w-full items-center pointer-events-none">
+              <img
+                className="w-[64px] h-[64px] rounded-full "
+                src={profile.photoURL}
+              />
+              <label className="pointer-events-none">
+                {profile.displayName}
+              </label>
+            </div>
+          </Link>
         );
       })}
     </div>

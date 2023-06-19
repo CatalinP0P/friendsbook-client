@@ -12,6 +12,7 @@ export default function Profile() {
 
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState();
+  const [loaded, setLoaded] = useState(false);
 
   const fetchPosts = async () => {
     const posts = await db.getProfilePosts(id);
@@ -19,20 +20,25 @@ export default function Profile() {
     setPosts(posts);
   };
 
+  const fetchDetails = async () => {
+    const profileDetails = await db.getProfileDetails(id);
+    console.log(profileDetails);
+    setUser(profileDetails);
+    setLoaded(true);
+  };
+
   useEffect(() => {
     fetchPosts();
+    fetchDetails();
   }, []);
 
-  return (
+  return loaded ? (
     <Layout>
       <div className="w-[95%] max-w-[1500px] mx-auto mb-4">
         <div className="bg-gray-400 w-full h-[0] pb-[35%]"></div>
         <div className="flex flex-col w-full items-center mt-[-175px] gap-4">
-          <img
-            src={auth.currentUser.photoURL}
-            className="mx-auto w-[25%] rounded-full"
-          />
-          <label className="text-6xl">{auth.currentUser.displayName}</label>
+          <img src={user.photoURL} className="mx-auto w-[25%] rounded-full" />
+          <label className="text-6xl">{user.displayName}</label>
         </div>
         <div className="w-full h-[2px] mt-32 mb-16 rounded-full bg-gray-200" />
       </div>
@@ -43,5 +49,5 @@ export default function Profile() {
         })}
       </div>
     </Layout>
-  );
+  ) : null;
 }

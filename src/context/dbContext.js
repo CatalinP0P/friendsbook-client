@@ -34,7 +34,7 @@ export const DbProvider = ({ children }) => {
     if (!req) throw "You need to add TokenID";
 
     const posts = await req.get("/posts/profile/" + profileId);
-    console.log(posts.data)
+    console.log(posts.data);
     return posts.data;
   };
 
@@ -58,6 +58,28 @@ export const DbProvider = ({ children }) => {
     }
   };
 
+  const getFriendsIds = async () => {
+    if (!req) throw "You need to add TokenID";
+
+    try {
+      const friends = await req.get("/friends");
+      return friends.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getProfileDetails = async (profileId) => {
+    if (!req) throw "You need to add TokenID";
+
+    try {
+      const details = await req.get("/profile/" + profileId);
+      return details.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <DbContext.Provider
       value={{
@@ -66,6 +88,8 @@ export const DbProvider = ({ children }) => {
         sendPost: sendPost,
         togglePostLike: togglePostLike,
         getProfilePosts: getProfilePosts,
+        getFriendsIds: getFriendsIds,
+        getProfileDetails: getProfileDetails,
       }}
     >
       {children}
