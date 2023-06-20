@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import firebase from "../lib/firebase";
 import socialize from "../assets/socialize.png";
 import googleSvg from "../assets/google.svg";
 import { GoogleAuthProvider } from "firebase/auth";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 
 const auth = firebase.auth();
@@ -10,11 +11,25 @@ const auth = firebase.auth();
 export default function SigninPage() {
   const authContext = useAuth();
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
   const signInWithGoogle = () => {
-    const provider = new GoogleAuthProvider();  
+    const provider = new GoogleAuthProvider();
     auth.signInWithPopup(provider).then((user) => {
       console.log(user);
     });
+  };
+
+  const loginWithEmail = async () => {
+    try {
+      const response = await auth.signInWithEmailAndPassword(email, password);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+      setError(err.message);
+    }
   };
 
   return (
@@ -28,6 +43,8 @@ export default function SigninPage() {
           <input
             type="email"
             placeholder=" "
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full px-6 py-4 bg-white outline-none border-4 rounded-xl border-blue-900 custom-input"
           />
           <label className="absolute left-[1em] top-[.80em] text-gray-400 transition-all">
@@ -38,6 +55,8 @@ export default function SigninPage() {
           <input
             type="password"
             placeholder=" "
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full px-6 py-4 bg-white outline-none border-4 rounded-xl border-blue-900 custom-input"
           />
           <label className="absolute left-[1em] top-[.80em] text-gray-400 transition-all">
@@ -45,11 +64,26 @@ export default function SigninPage() {
           </label>
         </div>
 
-        <button className="w-[75%] max-w-[500px] bg-blue-900 text-white p-4 rounded-xl hover:bg-blue-600 transition-all">
+        <button
+          className="w-[75%] max-w-[500px] bg-blue-900 text-white p-4 rounded-xl hover:bg-blue-600 transition-all"
+          onClick={() => loginWithEmail()}
+        >
           Login
         </button>
+        <p className={error ? "text-red-400 font-semibold w-full px-4" : " hidden"}>
+          {error}
+        </p>
+        <label>
+          No account?{" "}
+          <Link
+            to={"/register"}
+            className="text-blue-600 underline cursor-pointer"
+          >
+            create one
+          </Link>
+        </label>
 
-        <div className="flex flex-row items-center w-[75%] max-w-[500px] gap-4 my-8">
+        <div className="flex flex-row items-center w-[75%] max-w-[500px] gap-4 mt-2 mb-8">
           <div className="w-full h-[2px] bg-black"></div>
           <label>or</label>
           <div className="w-full h-[2px] bg-black"></div>
