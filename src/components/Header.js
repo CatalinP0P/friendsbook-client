@@ -17,7 +17,7 @@ export default function Header() {
   const [loaded, setLoaded] = useState(false);
 
   const searchProfiles = async (q) => {
-    if (q.length < 3) return setSearchedProfiles([]);
+    if (q.length < 1) return setSearchedProfiles([]);
 
     const profiles = await db.searchProfiles(q);
     console.log(profiles);
@@ -30,7 +30,7 @@ export default function Header() {
     const requests = await db.getMyFriendsRequest();
     console.log(requests);
     setRequests(requests);
-    setLoaded(true)
+    setLoaded(true);
   };
 
   useEffect(() => {
