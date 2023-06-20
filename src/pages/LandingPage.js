@@ -12,7 +12,7 @@ export default function LandingPage() {
   const db = useDB();
 
   return (
-    <div className="max-w-[2200px] mx-auto p-4 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+    <div className="max-w-[2200px] mx-auto md:p-4 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
       <LeftNavigation />
       <div className="col-span-2">
         <Feed />

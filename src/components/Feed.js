@@ -25,7 +25,7 @@ export default function Feed() {
   }, []);
 
   return (
-    <div className="w-full flex flex-col gap-8 px-4">
+    <div className="w-full flex flex-col gap-8 px-2 md:px-4">
       <NewPost />
       {posts.map((post) => {
         return <Post post={post} key={Math.random() * 1000} />;

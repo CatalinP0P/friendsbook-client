@@ -93,9 +93,31 @@ export const DbProvider = ({ children }) => {
 
   const searchProfiles = async (q) => {
     if (!req) throw "You need to add TokenID";
-    
+
     const profiles = await req.get("/profile/q/" + q);
     return profiles.data;
+  };
+
+  const callFriendRequest = async (userId) => {
+    if (!req) throw "You need to add TokenID";
+
+    const response = await req.post("/friends/request/" + userId);
+    return response.data;
+  };
+
+  const getFriendshipStatus = async (userId) => {
+    if (!req) throw "You need to add TokenID";
+
+    const response = await req.get("/friends/" + userId);
+    return response.data;
+  };
+
+  const getRequestState = async (userId) => {
+    if (!req) throw "You need to add TokenID";
+
+    const response = await req.get("/friends/request/" + userId);
+
+    return response.data;
   };
 
   return (
@@ -110,6 +132,9 @@ export const DbProvider = ({ children }) => {
         getProfileDetails: getProfileDetails,
         getMyFriendsRequest: getMyFriendsRequest,
         searchProfiles: searchProfiles,
+        callFriendRequest: callFriendRequest,
+        getFriendshipStatus: getFriendshipStatus,
+        getRequestState: getRequestState,
       }}
     >
       {children}

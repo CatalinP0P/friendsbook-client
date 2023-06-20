@@ -5,6 +5,8 @@ import { useDB } from "../context/dbContext";
 import Post from "../components/Post";
 import { useAuth } from "../context/authContext";
 
+import checkSVG from "../assets/check.svg";
+
 export default function Profile() {
   const { id } = useParams();
   const db = useDB();
@@ -12,24 +14,49 @@ export default function Profile() {
 
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState();
+  const [friends, setFriendship] = useState(false);
+
   const [loaded, setLoaded] = useState(false);
+  const [requestState, setRequestState] = useState("");
 
   const fetchPosts = async () => {
     const posts = await db.getProfilePosts(id);
-    console.log(posts);
     setPosts(posts);
+  };
+
+  const handleAddButton = async () => {
+    const res = await db.callFriendRequest(id);
+    setRequestState(res);
   };
 
   const fetchDetails = async () => {
     const profileDetails = await db.getProfileDetails(id);
-    console.log(profileDetails);
     setUser(profileDetails);
+  };
+
+  const fetchFriendship = async () => {
+    const isFriends = await db.getFriendshipStatus(id);
+    setFriendship(isFriends);
+    console.log(isFriends);
+  };
+
+  const fetchRequest = async () => {
+    const response = await db.getRequestState(id);
+    console.log(id);
+    console.log(response);
+    setRequestState(response);
+  };
+
+  const fetchAll = async () => {
+    await fetchDetails();
+    await fetchPosts();
+    await fetchFriendship();
+    await fetchRequest();
     setLoaded(true);
   };
 
   useEffect(() => {
-    fetchPosts();
-    fetchDetails();
+    fetchAll();
   }, []);
 
   return loaded ? (
@@ -39,6 +66,24 @@ export default function Profile() {
         <div className="flex flex-col w-full items-center mt-[-175px] gap-4">
           <img src={user.photoURL} className="mx-auto w-[25%] rounded-full" />
           <label className="text-6xl">{user.displayName}</label>
+          <button
+            className={"flex-row gap-4 bg-blue-900 text-white px-6 py-4 rounded-md items-center " + (auth.currentUser.uid == id ? " hidden" : "flex")}
+            onClick={friends ? null : handleAddButton}
+          >
+            {auth.currentUser.uid == id
+              ? null
+              : requestState == "Already friends"
+              ? "Friends"
+              : requestState == "Request Sent"
+              ? "Cancel Request"
+              : requestState == "Request Received"
+              ? "Accept Friend Request"
+              : "Add Friend"}
+            <img
+              className="w-[24px] h-[24px]"
+              src={friends ? checkSVG : null}
+            />
+          </button>
         </div>
         <div className="w-full h-[2px] mt-32 mb-16 rounded-full bg-gray-200" />
       </div>

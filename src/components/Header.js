@@ -14,6 +14,7 @@ export default function Header() {
 
   const [friendsRequest, setRequests] = useState([]);
   const [searchedProfiles, setSearchedProfiles] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   const searchProfiles = async (q) => {
     if (q.length < 3) return setSearchedProfiles([]);
@@ -27,7 +28,9 @@ export default function Header() {
 
   const fetchRequests = async () => {
     const requests = await db.getMyFriendsRequest();
+    console.log(requests);
     setRequests(requests);
+    setLoaded(true)
   };
 
   useEffect(() => {
@@ -36,7 +39,7 @@ export default function Header() {
 
   return (
     <div className="bg-blue-900">
-      <div className="mx-auto max-w-[2200px] grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 w-[95%] p-4 gap-4 items-center">
+      <div className="mx-auto max-w-[2200px] grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 w-[95%] p-4 gap-8 items-center">
         <Link to={"/"} className="cursor-pointer">
           <label className="text-2xl lg:text-4xl pointer-events-none">
             FriendsBook
@@ -96,7 +99,8 @@ export default function Header() {
             >
               <h1 className="text-center w-full text-2xl">Friends Request</h1>
               <hr className="my-4" />
-              <ProfilesList idsList={friendsRequest} />
+              <label>{friendsRequest.length}</label>
+              {loaded ? <ProfilesList idsList={friendsRequest} /> : null}
             </div>
           </div>
 
