@@ -6,6 +6,7 @@ import Post from "../components/Post";
 import { useAuth } from "../context/authContext";
 
 import checkSVG from "../assets/check.svg";
+import personPlus from "../assets/person-plus-fill.svg";
 
 export default function Profile() {
   const { id } = useParams();
@@ -67,7 +68,10 @@ export default function Profile() {
           <img src={user.photoURL} className="mx-auto w-[25%] rounded-full" />
           <label className="text-6xl">{user.displayName}</label>
           <button
-            className={"flex-row gap-4 bg-blue-900 text-white px-6 py-4 rounded-md items-center " + (auth.currentUser.uid == id ? " hidden" : "flex")}
+            className={
+              "flex-row gap-4 bg-blue-900 text-white px-6 py-4 rounded-md items-center " +
+              (auth.currentUser.uid == id ? " hidden" : "flex")
+            }
             onClick={friends ? null : handleAddButton}
           >
             {auth.currentUser.uid == id
@@ -81,7 +85,7 @@ export default function Profile() {
               : "Add Friend"}
             <img
               className="w-[24px] h-[24px]"
-              src={friends ? checkSVG : null}
+              src={friends ? checkSVG : personPlus}
             />
           </button>
         </div>

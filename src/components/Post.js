@@ -47,7 +47,9 @@ export default function Post({ post }) {
                 {post.userDisplayName}
               </label>
               <label className="font-semibold text-sm text-gray-400">
-                24 Aug 2023
+                {`${new Date(post.createdAt).getDate()}-${
+                  new Date(post.createdAt).getMonth() + 1
+                }-${new Date(post.createdAt).getFullYear()}`}
               </label>
             </div>
           </div>
