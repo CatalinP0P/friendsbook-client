@@ -80,6 +80,24 @@ export const DbProvider = ({ children }) => {
     }
   };
 
+  const getMyFriendsRequest = async () => {
+    if (!req) throw "You need to add TokenID";
+
+    try {
+      const requests = await req.get("/friends/requests");
+      return requests.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const searchProfiles = async (q) => {
+    if (!req) throw "You need to add TokenID";
+    
+    const profiles = await req.get("/profile/q/" + q);
+    return profiles.data;
+  };
+
   return (
     <DbContext.Provider
       value={{
@@ -90,6 +108,8 @@ export const DbProvider = ({ children }) => {
         getProfilePosts: getProfilePosts,
         getFriendsIds: getFriendsIds,
         getProfileDetails: getProfileDetails,
+        getMyFriendsRequest: getMyFriendsRequest,
+        searchProfiles: searchProfiles,
       }}
     >
       {children}
