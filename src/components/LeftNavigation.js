@@ -2,6 +2,7 @@ import React from "react";
 import { useAuth } from "../context/authContext";
 import peopleFill from "../assets/people-fill.svg";
 import peopleGroup from "../assets/people-group.svg";
+import profilePhoto from "../assets/profile.webp";
 import feed from "../assets/newspaper.svg";
 import { Link } from "react-router-dom";
 
@@ -10,10 +11,17 @@ export default function LeftNavigation() {
 
   return (
     <div className="w-full h-fit bg-white shadow-md rounded-md p-4 hidden md:flex flex-col items-center gap-4 px-8 lg:px-12">
-      <Link className="w-full h-full flex flex-col items-center gap-4" to={"/profile/" + authContext.currentUser.uid }>
+      <Link
+        className="w-full h-full flex flex-col items-center gap-4"
+        to={"/profile/" + authContext.currentUser.uid}
+      >
         <img
           className="w-[50%] rounded-full"
-          src={authContext.currentUser.photoURL}
+          src={
+            authContext.currentUser.photoURL
+              ? authContext.currentUser.photoURL
+              : profilePhoto
+          }
         />
         <label className="text-3xl lg:text-5xl font-bold text-gray-800">
           {authContext.currentUser.displayName}

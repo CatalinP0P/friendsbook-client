@@ -5,6 +5,7 @@ import { Link, useAsyncError } from "react-router-dom";
 import personPlusFill from "../assets/person-plus-fill.svg";
 import { useDB } from "../context/dbContext";
 import ProfilesList from "../components/ProfilesList";
+import profilePhoto from "../assets/profile.webp";
 
 const auth = firebase.auth();
 
@@ -69,7 +70,7 @@ export default function Header() {
                     className="flex flex-row gap-4 items-center text-black cursor-pointer"
                   >
                     <img
-                      src={profile.photoURL}
+                      src={profile.photoURL.length > 10 ? profile.photoURL : profilePhoto}
                       className="w-[64px] h-[64px] rounded-full pointer-events-none"
                     />
                     <label className="pointer-events-none">
@@ -106,7 +107,7 @@ export default function Header() {
 
           <div className="relative">
             <img
-              src={auth.currentUser?.photoURL}
+              src={auth.currentUser.photoURL ? auth.currentUser.phoneNumber : profilePhoto}
               className="rounded-full w-[64px] cursor-pointer"
               onClick={() => {
                 setMenuVisibility(!menuVisibility);

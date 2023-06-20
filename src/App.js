@@ -7,6 +7,7 @@ import LandingPage from "./pages/LandingPage";
 import { useDB } from "./context/dbContext";
 import { Route, Routes } from "react-router-dom";
 import Profile from "./pages/Profile";
+import Register from "./pages/Register";
 
 function App() {
   const authContext = useAuth();
@@ -14,6 +15,7 @@ function App() {
 
   return authContext.loaded ? (
     <Routes>
+      <Route path="/register" element={<Register />} />
       <Route
         path="/"
         element={

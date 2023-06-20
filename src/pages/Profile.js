@@ -4,7 +4,8 @@ import { useAsyncError, useParams } from "react-router-dom";
 import { useDB } from "../context/dbContext";
 import Post from "../components/Post";
 import { useAuth } from "../context/authContext";
-
+import coverImage from "../assets/cover.jpeg";
+import profilePhoto from "../assets/profile.webp";
 import checkSVG from "../assets/check.svg";
 import personPlus from "../assets/person-plus-fill.svg";
 
@@ -63,10 +64,13 @@ export default function Profile() {
   return loaded ? (
     <Layout>
       <div className="w-[95%] max-w-[1500px] mx-auto mb-4">
-        <div className="bg-gray-400 w-full h-[0] pb-[35%]"></div>
-        <div className="flex flex-col w-full items-center mt-[-175px] gap-4">
-          <img src={user.photoURL} className="mx-auto w-[25%] rounded-full" />
-          <label className="text-6xl">{user.displayName}</label>
+        <img src={coverImage} className="w-full h-[25vw] object-cover"/>
+        <div className="flex flex-col w-full items-center mt-[-90px] md:mt-[-120px] lg:mt-[-175px] gap-4">
+          <img
+            src={user.photoURL ? user.photoURL : profilePhoto}
+            className="mx-auto w-[25%] rounded-full"
+          />
+          <label className="text-4xl lg:text-6xl">{user.displayName}</label>
           <button
             className={
               "flex-row gap-4 bg-blue-900 text-white px-6 py-4 rounded-md items-center " +
@@ -91,7 +95,7 @@ export default function Profile() {
         </div>
         <div className="w-full h-[2px] mt-32 mb-16 rounded-full bg-gray-200" />
       </div>
-      <div className="w-[95%] max-w-[1000px] mx-auto flex flex-col gap-4">
+      <div className="w-[95%] max-w-[1000px] mx-auto flex flex-col gap-4 pb-24">
         <label className="text-2xl font-bold uppercase ms-2">Posts</label>
         {posts.map((post) => {
           return <Post post={post} key={post._id} />;

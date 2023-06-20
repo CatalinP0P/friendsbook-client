@@ -3,6 +3,8 @@ import { useAuth } from "../context/authContext";
 import gallery from "../assets/gallery.svg";
 import { useDB } from "../context/dbContext";
 
+import profilePhoto from "../assets/profile.webp"
+
 export default function NewPost() {
   const auth = useAuth();
   const db = useDB();
@@ -15,7 +17,7 @@ export default function NewPost() {
   const sendPost = async () => {
     const response = await db.sendPost(postTitle, postImage);
     setPostImage(null);
-    setPostTitle('')
+    setPostTitle("");
   };
 
   const handleFileChange = (e) => {
@@ -38,7 +40,7 @@ export default function NewPost() {
       <div className="flex flex-row w-full gap-4 items-center">
         <img
           className="w-[64px] h-[64px] rounded-full "
-          src={auth.currentUser.photoURL}
+          src={auth.currentUser.photoURL ? auth.currentUser.photoURL : profilePhoto}
         />
         <input
           className="w-full text-medium outline-none"
