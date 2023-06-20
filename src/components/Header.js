@@ -70,7 +70,7 @@ export default function Header() {
                     className="flex flex-row gap-4 items-center text-black cursor-pointer"
                   >
                     <img
-                      src={profile.photoURL.length > 10 ? profile.photoURL : profilePhoto}
+                      src={profile.photoURL ? profile.photoURL : profilePhoto}
                       className="w-[64px] h-[64px] rounded-full pointer-events-none"
                     />
                     <label className="pointer-events-none">
@@ -107,7 +107,11 @@ export default function Header() {
 
           <div className="relative">
             <img
-              src={auth.currentUser.photoURL ? auth.currentUser.phoneNumber : profilePhoto}
+              src={
+                auth.currentUser.photoURL
+                  ? auth.currentUser.photoURL
+                  : profilePhoto
+              }
               className="rounded-full w-[64px] cursor-pointer"
               onClick={() => {
                 setMenuVisibility(!menuVisibility);

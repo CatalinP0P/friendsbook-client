@@ -3,6 +3,8 @@ import { useDB } from "../context/dbContext";
 import { useAuth } from "../context/authContext";
 import { Link } from "react-router-dom";
 
+import profilePhoto from "../assets/profile.webp"
+
 export default function ProfilesList({ idsList }) {
   const db = useDB();
   const auth = useAuth();
@@ -31,7 +33,7 @@ export default function ProfilesList({ idsList }) {
             <div className="flex flex-row gap-4 w-full items-center pointer-events-none">
               <img
                 className="w-[64px] h-[64px] rounded-full "
-                src={profile.photoURL}
+                src={profile.photoURL ? profile.photoURL : profilePhoto}
               />
               <label className="pointer-events-none">
                 {profile.displayName}

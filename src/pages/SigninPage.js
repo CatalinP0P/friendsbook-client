@@ -39,7 +39,10 @@ export default function SigninPage() {
         <label className="text-6xl text-blue-900 font-bold uppercase">
           FriendsBook
         </label>
-        <div className="relative w-[75%] max-w-[500px] mt-16">
+        <label className="text-sm text-gray-400">
+          Test Account - email: test@gmail.com; password: test123
+        </label>
+        <div className="relative w-[75%] max-w-[500px] mt-8">
           <input
             type="email"
             placeholder=" "
@@ -70,7 +73,11 @@ export default function SigninPage() {
         >
           Login
         </button>
-        <p className={error ? "text-red-400 font-semibold w-full px-4" : " hidden"}>
+        <p
+          className={
+            error ? "text-red-400 font-semibold w-full px-4" : " hidden"
+          }
+        >
           {error}
         </p>
         <label>
