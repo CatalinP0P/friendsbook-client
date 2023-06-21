@@ -8,6 +8,7 @@ import coverImage from "../assets/cover.jpeg";
 import profilePhoto from "../assets/profile.webp";
 import checkSVG from "../assets/check.svg";
 import personPlus from "../assets/person-plus-fill.svg";
+import Loading from "./Loading";
 
 export default function Profile() {
   const { id } = useParams();
@@ -64,13 +65,18 @@ export default function Profile() {
   return loaded ? (
     <Layout>
       <div className="w-[95%] max-w-[1500px] mx-auto mb-4">
-        <img src={coverImage} className="w-full h-[40vw] md:h-[25vw] object-cover"/>
+        <img
+          src={coverImage}
+          className="w-full h-[40vw] md:h-[25vw] object-cover"
+        />
         <div className="flex flex-col w-full items-center mt-[-50px] sm:mt-[-90px] md:mt-[-120px] lg:mt-[-175px] gap-4">
           <img
             src={user.photoURL ? user.photoURL : profilePhoto}
             className="mx-auto w-[25%] rounded-full"
           />
-          <label className="text-2xl md:text-4xl lg:text-6xl">{user.displayName}</label>
+          <label className="text-2xl md:text-4xl lg:text-6xl">
+            {user.displayName}
+          </label>
           <button
             className={
               "flex-row gap-4 bg-blue-900 text-white px-6 py-4 rounded-md items-center " +
@@ -102,5 +108,7 @@ export default function Profile() {
         })}
       </div>
     </Layout>
-  ) : null;
+  ) : (
+    <Loading />
+  );
 }
