@@ -33,16 +33,16 @@ export default function SigninPage() {
   };
 
   return (
-    <div className="h-screen bg-blue-900 text-white flex flex-row items-center justify-center gap-32">
+    <div className="h-screen bg-blue-900 text-white flex flex-row items-center justify-center gap-16 lg:gap-32">
       <img src={socialize} className="w-[768px] xl:block hidden" />
-      <div className="bg-white py-16 rounded-3xl max-w-[800px] w-[95%] flex flex-col items-center text-center text-black text-2xl gap-8">
-        <label className="text-6xl text-blue-900 font-bold uppercase">
+      <div className="bg-white py-16 rounded-3xl max-w-[800px] w-[90%] flex flex-col items-center text-center text-black text-2xl gap-8">
+        <label className="text-2xl lg:text-6xl text-blue-900 font-bold uppercase">
           FriendsBook
         </label>
-        <label className="text-sm text-gray-400">
+        <label className="text-xs md:text-sm text-gray-400">
           Test Account - email: test@gmail.com; password: test123
         </label>
-        <div className="relative w-[75%] max-w-[500px] mt-8">
+        <div className="relative w-[90%] max-w-[500px] mt-8">
           <input
             type="email"
             placeholder=" "
@@ -54,7 +54,7 @@ export default function SigninPage() {
             Email
           </label>
         </div>
-        <div className="relative w-[75%] max-w-[500px]">
+        <div className="relative w-[90%] max-w-[500px]">
           <input
             type="password"
             placeholder=" "
@@ -68,7 +68,7 @@ export default function SigninPage() {
         </div>
 
         <button
-          className="w-[75%] max-w-[500px] bg-blue-900 text-white p-4 rounded-xl hover:bg-blue-600 transition-all"
+          className="w-[90%] text-lg md:text-2xl max-w-[500px] bg-blue-900 text-white p-4 rounded-xl hover:bg-blue-600 transition-all"
           onClick={() => loginWithEmail()}
         >
           Login
@@ -96,13 +96,16 @@ export default function SigninPage() {
           <div className="w-full h-[2px] bg-black"></div>
         </div>
 
-        <div className="w-[75%] max-w-[500px]">
+        <div className="w-[90%] max-w-[500px]">
           <button
             onClick={() => signInWithGoogle()}
-            className="p-4 flex flex-row gap-4 justify-between border-2 border-gray-200 rounded-full text-black w-full font-medium"
+            className="p-4 flex flex-row items-center text-xs md:text-2xl justify-between border-2 border-gray-200 rounded-full text-black w-full font-medium"
           >
-            <img className="w-[32px] pointer-events-none" src={googleSvg} />
-            <label className="pointer-events-none"> Sign in with Google </label>
+            <img
+              className="w-[24px] md:w-[32px] pointer-events-none"
+              src={googleSvg}
+            />
+            <label className="pointer-events-none">Sign in with Google</label>
             <div className="w-[32px] pointer-events-none"></div>
           </button>
         </div>

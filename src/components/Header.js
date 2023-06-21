@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import searchSVG from "../assets/search.svg";
+import searchSVG2 from "../assets/search2.svg";
 import firebase from "../lib/firebase";
 import { Link, useAsyncError } from "react-router-dom";
 import personPlusFill from "../assets/person-plus-fill.svg";
@@ -16,9 +17,15 @@ export default function Header() {
   const [friendsRequest, setRequests] = useState([]);
   const [searchedProfiles, setSearchedProfiles] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [profileQ, setProfileQ] = useState("");
+
+  const [searchModal, setSearchModal] = useState(false);
 
   const searchProfiles = async (q) => {
-    if (q.length < 1) return setSearchedProfiles([]);
+    if (q.length < 2) {
+      setSearchedProfiles([]);
+      return;
+    }
 
     const profiles = await db.searchProfiles(q);
     console.log(profiles);
@@ -38,20 +45,93 @@ export default function Header() {
     fetchRequests();
   }, []);
 
+  const closeAllModals = () => {
+    setMenuVisibility(false);
+    setFriendsVisibility(false);
+    setSearchModal(false);
+  };
+
   return (
-    <div className="bg-blue-900">
-      <div className="mx-auto max-w-[2200px] grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 w-[95%] p-4 gap-8 items-center">
-        <Link to={"/"} className="cursor-pointer">
-          <label className="text-2xl lg:text-4xl pointer-events-none">
-            FriendsBook
-          </label>
-        </Link>
+    <div
+      className="bg-blue-900"
+      onClick={() => {
+        closeAllModals();
+      }}
+    >
+      <div className="mx-auto max-w-[2200px] grid grid-cols-2 md:grid-cols-4 w-[95%] p-4 gap-8 items-center">
+        <div className="flex flex-row gap-4 items-center">
+          <Link to={"/"} className="cursor-pointer">
+            <label className="text-lg md:text-2xl lg:text-4xl pointer-events-none">
+              FriendsBook
+            </label>
+          </Link>
+          <div className="md:hidden h-full cursor-pointer">
+            <img
+              onClick={(e) => {
+                e.stopPropagation();
+                closeAllModals();
+                setSearchModal(!searchModal);
+              }}
+              src={searchSVG2}
+              className="h-[24px] w-[24px] md:w-[32px] md:h-[32px]"
+            />
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className={
+                "absolute top-[80px] text-black bg-white shadow-md left-2 right-2 p-4 flex-col items-center gap-2" +
+                (searchModal ? " flex" : " hidden")
+              }
+            >
+              <input
+                value={profileQ}
+                className="outline-none w-full bg-gray-100 p-4 rounded-3xl"
+                placeholder="Search friends"
+                onChange={(e) => {
+                  setProfileQ(e.target.value);
+                  searchProfiles(e.target.value);
+                }}
+              />
+              <div
+                className={
+                  "w-full flex-row justify-between gap-4 items-center" +
+                  (searchedProfiles.length <= 0 ? " hidden" : " flex")
+                }
+              >
+                <div className="w-full h-[2px] bg-gray-200" />
+                <label className={"text-gray-400 text-2xl my-4 "}>
+                  Profiles
+                </label>
+                <div className="w-full h-[2px] bg-gray-200" />
+              </div>
+              {searchedProfiles.map((profile) => {
+                return (
+                  <Link
+                    to={"/profile/" + profile.uid}
+                    key={profile.uid}
+                    className="flex flex-row gap-4 items-center text-black cursor-pointer w-full"
+                  >
+                    <img
+                      src={profile.photoURL ? profile.photoURL : profilePhoto}
+                      className="w-[64px] h-[64px] rounded-full pointer-events-none"
+                    />
+                    <label className="pointer-events-none">
+                      {profile.displayName}
+                    </label>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
         <div className="w-full md:flex flex-row justify-start hidden col-span-2">
           <div className="relative flex flex-row gap-2 items-center justify-start bg-white rounded-full px-2">
             <img className="w-[32px] p-[2px]" src={searchSVG} />
             <input
-              className="text-black outline-none py-2 me-2 min-w-[320px] m-[1pxs]"
+              className="text-black outline-none py-2 min-w-[320px] m-[1px] me-[25px] w-full"
+              value={profileQ}
               onChange={(e) => {
+                setProfileQ(e.target.value);
                 searchProfiles(e.target.value);
               }}
               placeholder="Search your friend...."
@@ -82,45 +162,46 @@ export default function Header() {
             </div>
           </div>
         </div>
-        <div className="hidden xl:flex relative w-full justify-end flex-row items-center gap-8">
-          <div className="relative">
+        <div className="flex w-full justify-end flex-row items-center gap-8">
+          <div className="md:relative">
             <img
               src={personPlusFill}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+                closeAllModals()
                 setFriendsVisibility(!friendRequestVisibility);
-                setMenuVisibility(false);
               }}
-              className="w-[32px] h-[32px] cursor-pointer"
+              className="h-[24px] w-[24px] md:w-[32px] md:h-[32px] cursor-pointer"
             />
             <div
               className={
-                "text-black text-end absolute bg-gray-100 p-4 right-0 top-20 transition-all rounded-xl shadow-xl flex-col text-lg min-w-[400px]" +
+                "text-black text-end absolute bg-gray-100 p-4 right-5 md:right-0 left-5 md:left-auto top-[75px] md:top-20 transition-all rounded-xl shadow-xl flex-col text-lg  md:min-w-[400px]" +
                 (friendRequestVisibility ? "" : " hidden")
               }
             >
               <h1 className="text-center w-full text-2xl">Friends Request</h1>
               <hr className="my-4" />
-              <label>{friendsRequest.length}</label>
               {loaded ? <ProfilesList idsList={friendsRequest} /> : null}
             </div>
           </div>
 
-          <div className="relative">
+          <div className="md:relative">
             <img
               src={
                 auth.currentUser.photoURL
                   ? auth.currentUser.photoURL
                   : profilePhoto
               }
-              className="rounded-full w-[64px] cursor-pointer"
-              onClick={() => {
+              className="rounded-full w-[40px] md:w-[64px] cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                closeAllModals();
                 setMenuVisibility(!menuVisibility);
-                setFriendsVisibility(false);
               }}
             />
             <div
               className={
-                "text-black text-end absolute bg-gray-100 right-0 top-20 transition-all rounded-xl shadow-xl flex-col text-lg min-w-[400px]" +
+                "text-black text-end absolute bg-gray-100 left-2 md:left-auto right-2 md:right-0 top-[80px] md:top-20 transition-all rounded-xl shadow-xl flex-col text-lg md:min-w-[400px]" +
                 (menuVisibility ? " flex" : " hidden")
               }
             >
@@ -129,7 +210,8 @@ export default function Header() {
               </label>
               <label
                 className="w-full hover:bg-white p-4 cursor-pointer"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   firebase.auth().signOut();
                   setMenuVisibility(false);
                 }}
